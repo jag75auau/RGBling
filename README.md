@@ -5,32 +5,28 @@
 
 
 ## Install:
-
-Clone the repository
-> git clone https://github.com/jag75auau/RGBling.git
+Clone the repository ```git clone https://github.com/jag75auau/RGBling.git```
 
 You will need to install the ADAFRUIT_NEOPIXEL Library to compile the sketch
 
-
 Using the Arduino IDE or editor and arduino-cli make the changes to the data pin and LED number:
-> #define DATA_PIN 5 // Set this to your data pin on your Arduino
-
-> #define NUM_LEDS 60 // Set this to the amount of LED's on you strip.
-
-
+```
+#define DATA_PIN 5 // Set this to your data pin on your Arduino
+#define NUM_LEDS 60 // Set this to the amount of LED's on you strip.
+```
 Upload the sketch to your Arduino
 
-
-
-Linux: RGBling needs to be exicutable
-> chmod +x RGBling
+Linux: RGBling needs to be exicutable  ```chmod +x RGBling```
 
 Copy RGBling into your ~/.local/bin or ~/.bin depending on your profile to access in anywhere. For Windows you can add the folder to you PATH enviroment variable.
 
 
 ## Usage:
-> RGBling /dev/{arduino_port} (e.g. RGBling /dev/ttyUSB0)
 
+```
+RGBling /dev/{arduino_port} (e.g. RGBling /dev/ttyUSB0)
+```
 or
-
+```
 >RGBling com3 (Windows)
+```
