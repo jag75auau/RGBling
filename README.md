@@ -11,6 +11,7 @@ You will need to install the ADAFRUIT_NEOPIXEL Library to compile the sketch
 
 Using the Arduino IDE or editor and arduino-cli make the changes to the data pin and LED number:
 > #define DATA_PIN 5 // Set this to your data pin on your Arduino
+
 > #define NUM_LEDS 60 // Set this to the amount of LED's on you strip.
 
 Upload the sketch to you Arduino
