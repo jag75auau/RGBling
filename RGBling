@@ -1,0 +1,219 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+    echo RGBling. v.1
+    echo Usage: RGBling /dev/{arduino_port}
+    echo e.g. RGBling /dev/ttyUSB0
+    echo 
+    echo RGBling is a set commandline utilites for controlling
+    echo WS2812B Addressable RGB LED strips connected to Arduino
+    echo micro controllers using the NEOPixel library.
+    echo
+    exit 2
+fi
+
+comp=$1
+
+stty 9600 -F $comp raw -hupcl -echo
+#stty_cmd="stty -F $comp -hupcl"
+SPACE='     '
+
+function jumpto
+{
+    label=$1
+    cmd=$(sed -n "/$label:/{:a;n;p;ba};" $0 | grep -v ':$')
+    eval "$cmd"
+    exit
+}
+
+menu:
+clear
+echo 
+echo "  ____   ____ ____  _ _             "
+echo " |  _ \ / ___| __ )| (_)_ __   __ _ "
+echo " | |_) | |  _|  _ \| | | '_ \ / _\` |"
+echo " |  _ <| |_| | |_) | | | | | | (_| |"
+echo " |_| \_\\\____|____/|_|_|_| |_|\__, |"
+echo "                              |___/ "
+echo 
+echo "${SPACE}" [q] Quit
+echo "${SPACE}" [n] None
+echo "${SPACE}" [0] DigitalRGB
+echo "${SPACE}" [1] Wave
+echo "${SPACE}" [2] Spectrum
+echo "${SPACE}" [3] Static
+echo "${SPACE}" [4] Supercar
+echo "${SPACE}" [5] Flux
+echo "${SPACE}" [6] Fade
+echo "${SPACE}" [7] Wipe
+echo "${SPACE}" [8] Running
+echo "${SPACE}" [9] Meteor
+echo 
+read -p "Enter a number between 0 and 9 for mode or N for OFF: " mode
+if [ "$mode" = '1' ]; then
+    echo "wave" > $comp
+    jumpto menu
+elif [[ "$mode" = '2' ]]; then
+    echo "spectrum" > $comp
+    jumpto menu
+elif [[ "$mode" = '0' ]]; then
+    echo "digitalrgb" > $comp
+    jumpto menu
+elif [[ "$mode" = '3' ]]; then
+    read -p "Enter the number of colours 1 to 3: " numcolour
+    if [[ "$numcolour" = '1' ]]; then
+        echo 
+        read -p "Enter the Red value between 000 to 255: " red
+        read -p "Enter the Green value between 000 to 255: " green
+        read -p "Enter the Blue value between 000 to 255: " blue
+        echo "static $red $green $blue" > $comp
+        jumpto menu
+    elif [[ "$numcolour" = '2' ]]; then
+        echo 
+        echo Colour 1
+        read -p "Enter the Red value between 000 to 255: " red1
+        read -p "Enter the Green value between 000 to 255: " green1
+        read -p "Enter the Blue value between 000 to 255: " blue1
+        echo 
+        echo Colour 2
+        read -p "Enter the Red value between 000 to 255: " red2
+        read -p "Enter the Green value between 000 to 255: " green2
+        read -p "Enter the Blue value between 000 to 255: " blue2
+        echo "static $red1 $green1 $blue1 $red2 $green2 $blue2" > $comp
+        jumpto menu
+    elif [[ "$numcolour" = '3' ]]; then
+        echo 
+        echo Colour 1
+        read -p "Enter the Red value between 000 to 255: " red1
+        read -p "Enter the Green value between 000 to 255: " green1
+        read -p "Enter the Blue value between 000 to 255: " blue1
+        echo
+        echo Colour 2
+        read -p "Enter the Red value between 000 to 255: " red2
+        read -p "Enter the Green value between 000 to 255: " green2
+        read -p "Enter the Blue value between 000 to 255: " blue2
+        echo
+        echo Colour 3
+        read -p "Enter the Red value between 000 to 255: " red3
+        read -p "Enter the Green value between 000 to 255: " green3
+        read -p "Enter the Blue value between 000 to 255: " blue3
+        echo "static $red1 $green1 $blue1 $red2 $green2 $blue2 $red3 $green3 $blue3" > $comp
+        jumpto menu
+    fi
+elif [[ "$mode" = 'n' ]]; then
+    echo "none" > $comp
+    jumpto menu
+elif [[ "$mode" = '4' ]]; then
+    echo 
+    read -p "Enter the Red value between 000 to 255: " red
+    read -p "Enter the Green value between 000 to 255: " green
+    read -p "Enter the Blue value between 000 to 255: " blue
+    echo "supercar $red $green $blue" > $comp
+    jumpto menu
+elif [[ "$mode" = '5' ]]; then
+    echo 
+    read -p "Enter the Red value between 000 to 255: " red
+    read -p "Enter the Green value between 000 to 255: " green
+    read -p "Enter the Blue value between 000 to 255: " blue
+    echo "flux $red $green $blue" > $comp
+    jumpto menu
+elif [[ "$mode" = '6' ]]; then
+    read -p "Enter the number of colours 1 to 3: " numcolour
+    if [ "$numcolour" = '1' ]; then
+        echo 
+        read -p "Enter the Red value between 000 to 255: " red
+        read -p "Enter the Green value between 000 to 255: " green
+        read -p "Enter the Blue value between 000 to 255: " blue
+        echo "fade $red $green $blue" > $comp
+        jumpto menu
+    elif [[ "$numcolour" = '2' ]]; then
+        echo 
+        echo Colour 1
+        read -p "Enter the Red value between 000 to 255: " red1
+        read -p "Enter the Green value between 000 to 255: " green1
+        read -p "Enter the Blue value between 000 to 255: " blue1
+        echo 
+        echo Colour 2
+        read -p "Enter the Red value between 000 to 255: " red2
+        read -p "Enter the Green value between 000 to 255: " green2
+        read -p "Enter the Blue value between 000 to 255: " blue2
+        echo "fade $red1 $green1 $blue1 $red2 $green2 $blue2" > $comp
+        jumpto menu
+    elif [[ "$numcolour" = '3' ]]; then
+        echo 
+        echo Colour 1
+        read -p "Enter the Red value between 000 to 255: " red1
+        read -p "Enter the Green value between 000 to 255: " green1
+        read -p "Enter the Blue value between 000 to 255: " blue1
+        echo
+        echo Colour 2
+        read -p "Enter the Red value between 000 to 255: " red2
+        read -p "Enter the Green value between 000 to 255: " green2
+        read -p "Enter the Blue value between 000 to 255: " blue2
+        echo
+        echo Colour 3
+        read -p "Enter the Red value between 000 to 255: " red3
+        read -p "Enter the Green value between 000 to 255: " green3
+        read -p "Enter the Blue value between 000 to 255: " blue3
+        echo "fade $red1 $green1 $blue1 $red2 $green2 $blue2 $red3 $green3 $blue3" > $comp
+        jumpto menu
+    fi
+elif [[ "$mode" = '7' ]]; then
+    read -p "Enter the number of colours 1 to 3: " numcolour
+    if [[ "$numcolour" = '1' ]]; then
+        echo 
+        read -p "Enter the Red value between 000 to 255: " red
+        read -p "Enter the Green value between 000 to 255: " green
+        read -p "Enter the Blue value between 000 to 255: " blue
+        echo "wipe $red $green $blue" > $comp
+        jumpto menu
+    elif [[ "$numcolour" = '2' ]]; then
+        echo 
+        echo Colour 1
+        read -p "Enter the Red value between 000 to 255: " red1
+        read -p "Enter the Green value between 000 to 255: " green1
+        read -p "Enter the Blue value between 000 to 255: " blue1
+        echo 
+        echo Colour 2
+        read -p "Enter the Red value between 000 to 255: " red2
+        read -p "Enter the Green value between 000 to 255: " green2
+        read -p "Enter the Blue value between 000 to 255: " blue2
+        echo "wipe $red1 $green1 $blue1 $red2 $green2 $blue2" > $comp
+        jumpto menu
+    elif [[ "$numcolour" = '3' ]]; then
+        echo 
+        echo Colour 1
+        read -p "Enter the Red value between 000 to 255: " red1
+        read -p "Enter the Green value between 000 to 255: " green1
+        read -p "Enter the Blue value between 000 to 255: " blue1
+        echo
+        echo Colour 2
+        read -p "Enter the Red value between 000 to 255: " red2
+        read -p "Enter the Green value between 000 to 255: " green2
+        read -p "Enter the Blue value between 000 to 255: " blue2
+        echo
+        echo Colour 3
+        read -p "Enter the Red value between 000 to 255: " red3
+        read -p "Enter the Green value between 000 to 255: " green3
+        read -p "Enter the Blue value between 000 to 255: " blue3
+        echo "wipe $red1 $green1 $blue1 $red2 $green2 $blue2 $red3 $green3 $blue3" > $comp
+        jumpto menu
+    fi
+elif [[ "$mode" = '8' ]]; then
+    echo 
+    read -p "Enter the Red value between 000 to 255: " red
+    read -p "Enter the Green value between 000 to 255: " green
+    read -p "Enter the Blue value between 000 to 255: " blue
+    echo "running $red $green $blue" > $comp
+    jumpto menu
+elif [[ "$mode" = '9' ]]; then
+    echo 
+    read -p "Enter the Red value between 000 to 255: " red
+    read -p "Enter the Green value between 000 to 255: " green
+    read -p "Enter the Blue value between 000 to 255: " blue
+    echo "meteor $red $green $blue" > $comp
+    jumpto menu
+elif [[ "$mode" = "q" ]]; then
+    clear
+    exit 1
+fi
