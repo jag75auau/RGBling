@@ -1,6 +1,6 @@
 # RGBling
 
-## RGBling is a set of commandline utilities for controlling the WS2812B Addressable RGB LEDs for Linux and Windows. It is a fork from https://gitlab.com/gabmus/ardhue_core but designed to work with commandline utilities instead. The Arduino waits upon recieving echo'ed commands from the PC.
+## RGBling is a set of commandline utilities for controlling the WS2812B Addressable RGB LEDs for Linux and Windows with 11 lighting effects for 1 LED strip. It is a fork from https://gitlab.com/gabmus/ardhue_core but designed to work with commandline utilities instead. The Arduino waits upon recieving echo'ed commands from the PC.
 
 
 
@@ -16,17 +16,20 @@ Using the Arduino IDE or editor and arduino-cli make the changes to the data pin
 ```
 Upload the sketch to your Arduino
 
-Linux: RGBling needs to be exicutable  ```chmod +x RGBling```
+### Linux
+RGBling needs to be exicutable ```chmod +x RGBling``` and the user needs to be in dialout group ```sudo usermod -a -G dialout $USER```
 
 Copy RGBling into your ~/.local/bin or ~/.bin depending on your profile to access in anywhere. For Windows you can add the folder to you PATH enviroment variable.
 
 
 ## Usage:
 
+### Linux
 ```
 RGBling /dev/{arduino_port} (e.g. RGBling /dev/ttyUSB0)
 ```
-or
+
+### Windows
 ```
->RGBling com3 (Windows)
+RGBling {COM Port} (e.g. RGBling com3)
 ```
