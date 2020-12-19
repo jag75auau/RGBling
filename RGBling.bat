@@ -1,5 +1,7 @@
+@echo off
 if "%~1"=="" goto usage
 set comp=%1
+powershell "$port= new-Object System.IO.Ports.SerialPort %comp%,9600,None,8,one; $port.open();"
 
 :start
 cls
@@ -214,33 +216,35 @@ set /P _blue3= Enter BLUE value between 000 to 255:
 echo wipe %_red1% %_green1% %_blue1% %_red2% %_green2% %_blue2% %_red3% %_green3% %_blue3% > %comp%
 goto start
 
-
 :running
 echo.
-set /P _red3= Enter the RED value between 000 to 255:
-set /P _green3= Enter GREEN value between 000 to 255:
-set /P _blue3= Enter BLUE value between 000 to 255:
+set /P _red= Enter the RED value between 000 to 255:
+set /P _green= Enter GREEN value between 000 to 255:
+set /P _blue= Enter BLUE value between 000 to 255:
 echo running %_red% %_green% %_blue% > %comp%
 goto start
 
 :meteor
 echo.
-set /P _red3= Enter the RED value between 000 to 255:
-set /P _green3= Enter GREEN value between 000 to 255:
-set /P _blue3= Enter BLUE value between 000 to 255:
+set /P _red= Enter the RED value between 000 to 255:
+set /P _green= Enter GREEN value between 000 to 255:
+set /P _blue= Enter BLUE value between 000 to 255:
 echo meteor %_red% %_green% %_blue% > %comp%
 goto start
 
 :usage
 echo RGBling. v.1
-echo Usage: RGBling /dev/{arduino_port}
-echo e.g. RGBling /dev/ttyUSB0
+echo Usage: RGBling {arduino com port}
+echo e.g. RGBling com3
 echo. 
 echo RGBling is a set commandline utilites for controlling
 echo WS2812B Addressable RGB LED strips connected to Arduino
 echo micro controllers using the NEOPixel library.
 echo.
-goto end
+goto err
 
 :end
+powershell "$port= new-Object System.IO.Ports.SerialPort %comp%,9600,None,8,one; $port.Close()"
 cls
+
+:err
